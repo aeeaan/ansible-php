@@ -1,35 +1,22 @@
 # {{ ansible_managed }}
-#
-{% if not php_fpm %}
-# Cause the PHP interpreter to handle files with a .php extension.
-#
-<FilesMatch \.php$>
-    SetHandler application/x-httpd-php
-</FilesMatch>
 
-#
-# Allow php to handle Multiviews
-#
 AddType text/html .php
-
-#
-# Add index.php to the list of files that will be served as directory
-# indexes.
-#
 DirectoryIndex index.php
 
-#
-# Uncomment the following lines to allow PHP to pretty-print .phps
-# files as PHP source code:
-#
-#<FilesMatch \.phps$>
-#    SetHandler application/x-httpd-php-source
-#</FilesMatch>
+<IfModule  mod_php5.c>
 
-#
-# Apache specific PHP configuration options
-# those can be override in each configured vhost
-#
-php_value session.save_handler "files"
-php_value session.save_path    "/var/lib/php/session"
-{% endif %}
+    <FilesMatch \.php$>
+        SetHandler application/x-httpd-php
+    </FilesMatch>
+
+    php_value session.save_handler "files"
+    php_value session.save_path    "/var/lib/php/session"
+
+</IfModule>
+
+<IfModule !mod_php5.c>
+
+    RewriteEngine On
+    RewriteRule ^/(.*\.php(/.*)?)$ fcgi://127.0.0.1:9000%{DOCUMENT_ROOT}/$1 [P,L]
+
+</IfModule>
