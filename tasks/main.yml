@@ -112,7 +112,7 @@
     - php
 
 - name: configure php httpd module
-  template: src=10-php.conf.j2 dest=/etc/httpd/conf.modules.d/10-php.conf.j2 owner=root group=root mode=0644
+  template: src=10-php.conf.j2 dest=/etc/httpd/conf.modules.d/10-php.conf owner=root group=root mode=0644
   notify:
     - restart httpd
   tags:
