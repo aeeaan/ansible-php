@@ -128,3 +128,12 @@
     - configuration
     - php
     - httpd
+
+- name: ensure php-fpm is enabled
+  service: name=php-fpm enabled=yes
+  when: php_fpm == true
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+    - services
