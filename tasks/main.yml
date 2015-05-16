@@ -59,6 +59,12 @@
     - packages
     - php
 
+- name: install php redis
+  yum: pkg="{{ php_base_name }}-pecl-redis" state=present
+  tags:
+    - packages
+    - php
+
 - name: install php opcache for IUS on CentOS 6
   yum: pkg={{ item }} state=present
   with_items:
