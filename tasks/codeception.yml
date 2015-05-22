@@ -1,0 +1,20 @@
+---
+- name: download codeception
+  get_url: url=http://codeception.com/codecept.phar dest=/usr/local/bin/codecept force=no owner=root group=root mode=0755
+  register: codeception_install
+  tags:
+    - php
+    - codeception
+    - packages
+
+- name: update codeception
+  shell: /usr/local/bin/codecept -qn self-update
+  when: codeception_install|changed
+
+- name: cron codeception updates
+  cron: name="update codeception" job="/usr/local/bin/codecept -qn self-update" hour=2 minute=0 state=present
+  when: php_codeception_autoupdate
+  tags:
+    - php
+    - codeception
+    - configuration

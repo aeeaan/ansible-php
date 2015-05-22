@@ -149,4 +149,13 @@
   when: php_composer
   tags:
     - php
+    - composer
+    - packages
+
+- name: install codeception
+  include: codeception.yml
+  when: php_codeception
+  tags:
+    - php
+    - codeception
     - packages

@@ -27,6 +27,8 @@ Role Variables
 | php_realpath_cache_ttl		| 120					|					|
 | php_composer				| true					|					|
 | php_composer_autoupdate		| true					|					|
+| php_codeception			| true					|					|
+| php_codeception_autoupdate		| true					|					|
 
 Dependencies
 ------------
