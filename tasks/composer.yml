@@ -1,0 +1,22 @@
+---
+- name: ensure curl is installed
+  yum: name=curl state=present
+  tags:
+    - php
+    - composer
+    - packages
+
+- name: run composer installer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet creates=/usr/local/bin/composer
+  tags:
+    - php
+    - composer
+    - packages
+
+- name: cron composer updates
+  cron: name="update composer" job="/usr/local/bin/composer self-update" hour=2 minute=0 state=present
+  when: php_composer_autoupdate
+  tags:
+    - php
+    - composer
+    - configuration

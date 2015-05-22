@@ -143,3 +143,10 @@
     - configuration
     - php
     - services
+
+- name: install composer
+  include: composer.yml
+  when: php_composer
+  tags:
+    - php
+    - packages
