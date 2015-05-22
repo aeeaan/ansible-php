@@ -1,31 +1,42 @@
-Role Name
+correcthorse.php
 =========
 
-A brief description of the role goes here.
-
-Requirements
-------------
-
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+A role for installing php.
 
 Role Variables
 --------------
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+| Variable                              | Default				| Notes					|
+| :---                                  | :---                          	| :---					|
+| php_base_name				| php					| php, php55u, php56u, etc		|
+| php_version				| 5.4					|					|
+| php_fpm				| true					|					|
+| php_use_memcache			| true					|					|
+| php_use_memcached			| false					|					|
+| php_timezone				| America/New_York			|					|
+| php_upload_max			| 30M					|					|
+| php_post_max				| 30M					|					|
+| php_html_errors			| "Off"					|					|
+| php_memory_limit			| 256M					|					|
+| php_expose_php			| "Off"					|					|
+| php_max_execution_time		| 120					|					|
+| php_error_reporting			| "E_ALL & ~E_DEPRECATED & ~E_STRICT"	|					|
+| php_display_errors			| "Off"	   		   		|					|
+| php_display_startup_errors		| "Off"					|					|
+| php_realpath_cache_size		| 16k					|					|
+| php_realpath_cache_ttl		| 120					|					|
 
 Dependencies
 ------------
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+TODO
 
 Example Playbook
 ----------------
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
     - hosts: servers
       roles:
-         - { role: username.rolename, x: 42 }
+         - { role: correcthorse.php }
 
 License
 -------
@@ -35,4 +46,4 @@ MIT
 Author Information
 ------------------
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+* [Joshua Rusch](https://correct.horse/)
