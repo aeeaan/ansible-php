@@ -1,6 +1,6 @@
 ---
 - name: install base php packages
-  yum: pkg={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}"
      - "{{ php_base_name }}-common"
@@ -12,7 +12,7 @@
     - php
 
 - name: install our common php packages
-  yum: pkg={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-gd"
      - "{{ php_base_name }}-mbstring"
@@ -25,48 +25,48 @@
     - php
 
 - name: install php fpm
-  yum: pkg="{{ php_base_name }}-fpm" state=present
+  yum: name="{{ php_base_name }}-fpm" state=present
   when: php_fpm == true
   tags:
     - packages
     - php
 
 - name: install mod_fastcgi for fpm
-  yum: pkg="mod_fastcgi" state=present
+  yum: name="mod_fastcgi" state=present
   when: ansible_distribution_major_version|int < 7 and php_fpm == true
   tags:
     - packages
     - php
 
 - name: install php jsonc
-  yum: pkg="{{ php_base_name }}-pecl-jsonc" state=present
+  yum: name="{{ php_base_name }}-pecl-jsonc" state=present
   when: php_version > 5.4
   tags:
     - packages
     - php
 
 - name: install php mysqlnd
-  yum: pkg="{{ php_base_name }}-mysqlnd" state=present
+  yum: name="{{ php_base_name }}-mysqlnd" state=present
   when: php_version > 5.4
   tags:
     - packages
     - php
 
 - name: install php mysql
-  yum: pkg="{{ php_base_name }}-mysql" state=present
+  yum: name="{{ php_base_name }}-mysql" state=present
   when: php_version < 5.5
   tags:
     - packages
     - php
 
 - name: install php redis
-  yum: pkg="{{ php_base_name }}-pecl-redis" state=present
+  yum: name="{{ php_base_name }}-pecl-redis" state=present
   tags:
     - packages
     - php
 
 - name: install php opcache for IUS on CentOS 6
-  yum: pkg={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-opcache"
      - "{{ php_base_name }}-pecl-apcu"
@@ -76,7 +76,7 @@
     - php
 
 - name: install php opcache for IUS on CentOS 7
-  yum: pkg={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-opcache"
      - "{{ php_base_name }}-pecl-apcu"
@@ -86,7 +86,7 @@
     - php
 
 - name: install php opcache on Centos 7
-  yum: pkg={{ item }} state=present
+  yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-pecl-zendopcache"
      - "{{ php_base_name }}-pecl-apcu"
@@ -96,14 +96,14 @@
     - php
 
 - name: install php memcache driver
-  yum: pkg="{{ php_base_name }}-pecl-memcache"
+  yum: name="{{ php_base_name }}-pecl-memcache" state=present
   when: php_use_memcache == true and php_version < 5.6
   tags:
     - packages
     - php
 
 - name: install php memcached driver
-  yum: pkg="{{ php_base_name }}-pecl-memcached"
+  yum: name="{{ php_base_name }}-pecl-memcached" state=present
   when: php_use_memcached == true
   tags:
     - packages
