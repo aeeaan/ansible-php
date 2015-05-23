@@ -146,16 +146,26 @@
 
 - name: install composer
   include: composer.yml
-  when: php_composer
+  when: development is defined and development or php_development or php_composer
   tags:
     - php
     - composer
+    - development
     - packages
 
 - name: install codeception
   include: codeception.yml
-  when: php_codeception
+  when: development is defined and development or php_development or php_codeception
   tags:
     - php
     - codeception
+    - development
+    - packages
+
+- name: install other development packages
+  include: development.yml
+  when: development is defined and development or php_development
+  tags:
+    - php
+    - development
     - packages
