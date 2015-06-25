@@ -5,6 +5,8 @@ php_version: 5.4
 php_development: false
 
 php_fpm: true
+php_fpm_user: php-fpm
+php_fpm_group: php-fpm
 
 #multiple memcache pecl modules
 php_use_memcache: true

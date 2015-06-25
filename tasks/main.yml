@@ -31,6 +31,22 @@
     - packages
     - php
 
+- name: configure php fpm
+  template: src=php-fpm.conf.j2 dest=/etc/php-fpm.conf owner=root group=root mode=0644
+  when: php_fpm == true
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+
+- name: configure php fpm pools
+  template: src=php-fpm.pool.conf.j2 dest=/etc/php-fpm.d/www.conf owner=root group=root mode=0644
+  when: php_fpm == true
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+
 - name: install mod_fastcgi for fpm
   yum: name="mod_fastcgi" state=present
   when: ansible_distribution_major_version|int < 7 and php_fpm == true
