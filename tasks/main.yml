@@ -135,6 +135,16 @@
     - php
     - httpd
 
+- name: configure httpd vhosts for php
+  template: src=vhost.php.conf.j2  dest="/etc/httpd/conf.d/vhost_{{ item.servername }}.conf.d/php.conf" owner=root group=root mode=0644
+  with_items: httpd_vhosts
+  when: httpd_vhosts is defined and item.servername is defined
+  notify: restart httpd
+  tags:
+    - httpd
+    - php
+    - configuration
+
 - name: ensure php-fpm is enabled
   service: name=php-fpm enabled=yes
   when: php_fpm == true
