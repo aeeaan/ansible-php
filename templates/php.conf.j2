@@ -13,3 +13,16 @@ DirectoryIndex index.php
     php_value session.save_path    "/var/lib/php/session"
 
 </IfModule>
+
+{% if php_fpm %}
+<IfModule  !mod_php5.c>
+
+<FilesMatch "\.php$">
+     SetHandler  "proxy:fcgi://localhost:9000"
+</FilesMatch>
+<Proxy "fcgi://localhost:9000">
+    ProxySet timeout=30
+</Proxy>
+
+</IfModule>
+{% endif %}
