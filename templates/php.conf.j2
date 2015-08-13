@@ -21,7 +21,7 @@ DirectoryIndex index.php
      SetHandler  "proxy:fcgi://localhost:9000"
 </FilesMatch>
 <Proxy "fcgi://localhost:9000">
-    ProxySet timeout=30
+    ProxySet timeout={{ php_fpm_proxy_timeout }}
 </Proxy>
 
 </IfModule>

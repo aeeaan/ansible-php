@@ -7,6 +7,7 @@ php_development: false
 php_fpm: true
 php_fpm_user: php-fpm
 php_fpm_group: php-fpm
+php_fpm_proxy_timeout: 30
 
 #multiple memcache pecl modules
 php_use_memcache: true
