@@ -47,6 +47,14 @@
     - configuration
     - php
 
+- name: configure logrotate for php fpm
+  template: src=logrotate.j2 dest=/etc/logrotate.d/php-fpm
+  when: php_fpm == true
+  tags:
+    - configuration
+    - php
+    - logrotate
+
 - name: install mod_fastcgi for fpm
   yum: name="mod_fastcgi" state=present
   when: ansible_distribution_major_version|int < 7 and php_fpm == true

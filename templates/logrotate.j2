@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+/var/log/php-fpm/*log {
+    {{ php_fpm_logrotate_period }}
+    rotate {{ php_fpm_logrotate_keep }}
+    {% if php_fpm_logrotate_compress %}compress{% else %}nocompress{% endif %}
+
+    missingok
+    notifempty
+    sharedscripts
+    delaycompress
+    postrotate
+	/bin/kill -SIGUSR1 `cat /run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+    endscript
+}

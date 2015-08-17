@@ -14,6 +14,9 @@ Role Variables
 | php_fpm_user				| php-fpm				|					|
 | php_fpm_group				| php-fpm				|					|
 | php_fpm_proxy_timeout			| 30					| timeout for mod_proxy_fcgi handler	|
+| php_fpm_logrotate_period		| weekly				| daily, weekly, monthly     		|
+| php_fpm_logrotate_keep		| 5					| number of rotations to keep		|
+| php_fpm_logrotate_compress		| false					| compress logs if true	 		|
 | php_use_memcache			| true					|					|
 | php_use_memcached			| false					|					|
 | php_timezone				| America/New_York			|					|
