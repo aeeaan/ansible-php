@@ -64,7 +64,7 @@
 
 - name: install php jsonc
   yum: name="{{ php_base_name }}-pecl-jsonc" state=present
-  when: php_version > 5.4
+  when: php_version > 5.4 and php_base_name != php55w or php_base_name != php56w
   tags:
     - packages
     - php
