@@ -24,6 +24,10 @@
     - packages
     - php
 
+- name: install php imagick
+  yum: name="{{ php_base_name }}-pecl-imagic" state=present
+  when: php_imagic == true
+
 - name: install php fpm
   yum: name="{{ php_base_name }}-fpm" state=present
   when: php_fpm == true

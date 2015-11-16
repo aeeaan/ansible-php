@@ -13,6 +13,7 @@ php_fpm_logrotate_period: weekly
 php_fpm_logrotate_keep: 5
 php_fpm_logrotate_compress: false
 
+php_imagic: true
 #multiple memcache pecl modules
 php_use_memcache: true
 php_use_memcached: false
