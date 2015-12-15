@@ -1,5 +1,8 @@
 ; {{ ansible_managed }}
 ;
+; WARNING: not all of these configuration directives will be compatible with all versions of php-fpm.
+; PHP documentation doesn't seem to bother keeping track of what versions directives were added in.
+;
 ;;;;;;;;;;;;;;;;;;;;;
 ; FPM Configuration ;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -19,7 +22,11 @@ include=/etc/php-fpm.d/*.conf
 [global]
 ; Pid file
 ; Default Value: none
+{% if ansible_distribution_major_version|int > 6 %}
 pid = /run/php-fpm/php-fpm.pid
+{% else %}
+pid = /var/run/php-fpm/php-fpm.pid
+{% endif %}
 
 ; Error log file
 ; If it's set to "syslog", log is sent to syslogd instead of being written
@@ -82,7 +89,11 @@ error_log = /var/log/php-fpm/error.log
 
 ; Send FPM to background. Set to 'no' to keep FPM in foreground for debugging.
 ; Default Value: yes
+{{ if php_base_name == "php" and ansible_distribution_major_version|int < 7 }}
+daemonize = no
+{% else %}
 daemonize = yes
+{% endif %}
 
 ; Set open file descriptor rlimit for the master process.
 ; Default Value: system defined value
