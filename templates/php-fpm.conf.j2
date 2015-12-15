@@ -89,7 +89,7 @@ error_log = /var/log/php-fpm/error.log
 
 ; Send FPM to background. Set to 'no' to keep FPM in foreground for debugging.
 ; Default Value: yes
-{{ if php_base_name == "php" and ansible_distribution_major_version|int < 7 }}
+{% if php_base_name == "php" and ansible_distribution_major_version|int < 7 %}
 daemonize = no
 {% else %}
 daemonize = yes
