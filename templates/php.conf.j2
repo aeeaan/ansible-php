@@ -1,5 +1,12 @@
 # {{ ansible_managed }}
 
+{% if ansible_distribution_major_version|int < 7 %}
+# module loaded here on RHEL 6, not in conf.modules.d
+<IfModule prefork.c>
+  LoadModule php5_module modules/libphp5.so
+</IfModule>
+{% endif %}
+
 AddType text/html .php
 DirectoryIndex index.php
 
