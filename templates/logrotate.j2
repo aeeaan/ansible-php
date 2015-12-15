@@ -9,6 +9,10 @@
     sharedscripts
     delaycompress
     postrotate
+{% if ansible_distribution_major_version|int > 6 %}
 	/bin/kill -SIGUSR1 `cat /run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+{% else %}
+        /bin/kill -SIGUSR1 `cat /var/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+{% endif %}
     endscript
 }
