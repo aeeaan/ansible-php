@@ -90,32 +90,22 @@
     - packages
     - php
 
-- name: install php opcache for IUS on CentOS 6
+- name: install php opcache for IUS/Webtatic
   yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-opcache"
      - "{{ php_base_name }}-pecl-apcu"
-  when: ansible_distribution_major_version|int == 6 and php_version > 5.3
+  when: php_base_name != "php" or php_base_name != "php54w"
   tags:
     - packages
     - php
 
-- name: install php opcache for IUS on CentOS 7
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-opcache"
-     - "{{ php_base_name }}-pecl-apcu"
-  when: ansible_distribution_major_version|int == 7 and php_version > 5.4
-  tags:
-    - packages
-    - php
-
-- name: install php opcache on Centos 7
+- name: install php opcache for base
   yum: name={{ item }} state=present
   with_items:
      - "{{ php_base_name }}-pecl-zendopcache"
      - "{{ php_base_name }}-pecl-apcu"
-  when: ansible_distribution_major_version|int == 7 and php_version == 5.4
+  when: php_base_name == "php" or php_base_name == "php54w"
   tags:
     - packages
     - php
