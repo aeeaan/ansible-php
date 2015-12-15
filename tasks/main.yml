@@ -63,9 +63,9 @@
     - php
     - logrotate
 
-- name: install mod_fastcgi for fpm
-  yum: name="mod_fastcgi" state=present
-  when: ansible_distribution_major_version|int < 7 and php_fpm == true
+- name: install mod_proxy_fcgi backport for php-fpm
+  yum: name=mod_proxy_fcgi state=present
+  when: ansible_distribution_major_version|int == 6 and php_fpm == true
   tags:
     - packages
     - php
