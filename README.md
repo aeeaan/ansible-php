@@ -33,6 +33,7 @@ Role Variables
 | php_realpath_cache_size		| 16k					|					|
 | php_realpath_cache_ttl		| 120					|					|
 | php_max_input_vars			| 1000					|					|
+| php_short_open_tag			| Off					|					|
 | php_composer				| true					|					|
 | php_composer_autoupdate		| true					|					|
 | php_codeception			| true					|					|
