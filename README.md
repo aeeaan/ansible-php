@@ -17,6 +17,12 @@ Role Variables
 | php_fpm_logrotate_period		| weekly				| daily, weekly, monthly     		|
 | php_fpm_logrotate_keep		| 5					| number of rotations to keep		|
 | php_fpm_logrotate_compress		| false					| compress logs if true	 		|
+| php_fpm_pm				| dynamic				| dynamic|static   			|
+| php_fpm_max_children			| 50					| max children for dynamic or total children for static |
+| php_fpm_start_servers			| 5					|     	       	   	      	    	|
+| php_fpm_min_spare_servers		| 5					|					|
+| php_fpm_max_spare_servers		| 35					|					|
+| php_fpm_max_requests			| 0					| 0 is unlimited			|
 | php_imagick				| true					|					|
 | php_use_memcache			| true					|					|
 | php_use_memcached			| false					|					|

@@ -12,6 +12,12 @@ php_fpm_proxy_timeout: 30
 php_fpm_logrotate_period: weekly
 php_fpm_logrotate_keep: 5
 php_fpm_logrotate_compress: false
+php_fpm_pm: dynamic
+php_fpm_max_children: 50
+php_fpm_start_servers: 5
+php_fpm_min_spare_servers: 5
+php_fpm_max_spare_servers: 35
+php_fpm_max_requests: 0
 
 php_imagick: true
 #multiple memcache pecl modules
