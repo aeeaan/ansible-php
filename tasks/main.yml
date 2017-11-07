@@ -39,7 +39,10 @@
 
 - name: install IUS json
   yum: name="{{ php_base_name }}-json" state=present
-  when: php_source="IUS" and php_version > 5.6
+  when: php_source == "IUS" and php_version > 5.6
+  tags:
+    - packages
+    - php
 
 - name: install php imagick
   yum: name="{{ php_base_name }}-pecl-imagick" state=present
