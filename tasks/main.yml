@@ -5,11 +5,18 @@
      - "{{ php_base_name }}"
      - "{{ php_base_name }}-common"
      - "{{ php_base_name }}-cli"
-     - "{{ php_base_name }}-pear"
      - "{{ php_base_name }}-pdo"
   tags:
     - packages
     - php
+
+- name: install pear
+  yum: name="{{ php_base_name }}-pear" state=present
+  when: (php_source != "IUS") or (php_source == "IUS" and php_version < 7.1)
+
+- name: install IUS pear
+  yum: name="pear1u" state=present
+  when: php_source == "IUS" and php_version >= 7.1
 
 - name: install our common php packages
   yum: name={{ item }} state=present

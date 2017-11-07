@@ -2,6 +2,7 @@
 # php package name
 php_base_name: php
 php_version: 5.4
+php_source: ""
 php_development: false
 
 php_fpm: true

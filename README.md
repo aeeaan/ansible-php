@@ -10,6 +10,7 @@ Role Variables
 | :---                                  | :---                          	| :---					|
 | php_base_name				| php					| php, php55u, php56u, etc		|
 | php_version				| 5.4					|					|
+| php_source				| ''					| '',IUS				|
 | php_fpm				| true					|					|
 | php_fpm_user				| php-fpm				|					|
 | php_fpm_group				| php-fpm				|					|
