@@ -222,6 +222,10 @@ php_admin_flag[log_errors] = on
 
 ; Set session path to a directory owned by process user
 php_value[session.save_handler] = files
+{% if php_source == "IUS" and php_version > 5.6 %}
+php_value[session.save_path]    = /var/lib/php/fpm/session
+php_value[soap.wsdl_cache_dir]  = /var/lib/php/fpm/wsdlcache
+{% else %}
 php_value[session.save_path]    = /var/lib/php-fpm/session
 php_value[soap.wsdl_cache_dir]  = /var/lib/php-fpm/wsdlcache
-
+{% endif %}
