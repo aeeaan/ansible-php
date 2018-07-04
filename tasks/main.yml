@@ -29,10 +29,16 @@
   with_items:
      - "{{ php_base_name }}-gd"
      - "{{ php_base_name }}-mbstring"
-     - "{{ php_base_name }}-mcrypt"
      - "{{ php_base_name }}-process"
      - "{{ php_base_name }}-soap"
      - "{{ php_base_name }}-xml"
+  tags:
+    - packages
+    - php
+
+- name: install mcrypt where not deprecated
+  yum: name="{{ php_base_name }}-mcrypt" state=present
+  when: php_version <= 7.1
   tags:
     - packages
     - php
