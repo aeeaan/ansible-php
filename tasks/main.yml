@@ -9,6 +9,18 @@
     - packages
     - php
 
+- name: install our common php packages
+  yum: name={{ item }} state=present
+  with_items:
+     - "{{ php_base_name }}-gd"
+     - "{{ php_base_name }}-mbstring"
+     - "{{ php_base_name }}-process"
+     - "{{ php_base_name }}-soap"
+     - "{{ php_base_name }}-xml"
+  tags:
+    - packages
+    - php
+
 - name: install pear
   yum: name="{{ php_base_name }}-pear" state=present
   when: (php_source != "IUS") or (php_source == "IUS" and php_version < 7.1)
@@ -19,18 +31,6 @@
 - name: install IUS pear
   yum: name="pear1u" state=present
   when: php_source == "IUS" and php_version >= 7.1
-  tags:
-    - packages
-    - php
-
-- name: install our common php packages
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-gd"
-     - "{{ php_base_name }}-mbstring"
-     - "{{ php_base_name }}-process"
-     - "{{ php_base_name }}-soap"
-     - "{{ php_base_name }}-xml"
   tags:
     - packages
     - php
