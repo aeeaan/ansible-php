@@ -42,6 +42,13 @@
     - packages
     - php
 
+- name: install sodium
+  yum: name="{{ php_base_name }}-sodium" state=present
+  when: php_version > 7.1
+  tags:
+    - packages
+    - php
+
 - name: install IUS json
   yum: name="{{ php_base_name }}-json" state=present
   when: php_source == "IUS" and php_version > 5.6
