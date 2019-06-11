@@ -6,8 +6,7 @@
     - packages
 
 - name: install phpunit
-  yum: name={{ item }} state=present
-  with_items: "{{ php_phpunit_rpms }}"
+  yum: name={{ php_phpunit_rpms }} state=present
   tags:
     - php
     - development

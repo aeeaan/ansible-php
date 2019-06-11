@@ -1,22 +1,17 @@
 ---
 - name: install base php packages
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-common"
-     - "{{ php_base_name }}-cli"
-     - "{{ php_base_name }}-pdo"
+  yum:
+    name: ['{{ php_base_name }}-common', '{{ php_base_name }}-cli', '{{ php_base_name }}-pdo']
+    state: present
   tags:
     - packages
     - php
 
 - name: install our common php packages
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-gd"
-     - "{{ php_base_name }}-mbstring"
-     - "{{ php_base_name }}-process"
-     - "{{ php_base_name }}-soap"
-     - "{{ php_base_name }}-xml"
+  yum:
+    name: ['{{ php_base_name }}-gd', '{{ php_base_name }}-mbstring', '{{ php_base_name }}-process', '{{ php_base_name 
+}}-soap', '{{ php_base_name }}-xml']
+    state: present
   tags:
     - packages
     - php
@@ -124,20 +119,18 @@
     - php
 
 - name: install php opcache for IUS/Webtatic
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-opcache"
-     - "{{ php_base_name }}-pecl-apcu"
+  yum:
+    name: ['{{ php_base_name }}-opcache', '{{ php_base_name }}-pecl-apcu']
+    state: present
   when: php_base_name != "php" and php_base_name != "php54w"
   tags:
     - packages
     - php
 
 - name: install php opcache for base
-  yum: name={{ item }} state=present
-  with_items:
-     - "{{ php_base_name }}-pecl-zendopcache"
-     - "{{ php_base_name }}-pecl-apcu"
+  yum:
+    name: ['{{ php_base_name }}-pecl-zendopcache', '{{ php_base_name }}-pecl-apcu']
+    state: present
   when: php_base_name == "php" or php_base_name == "php54w"
   tags:
     - packages
