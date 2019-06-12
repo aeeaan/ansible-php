@@ -1,189 +1,16 @@
 ---
-- name: install base php packages
-  yum:
-    name: ['{{ php_base_name }}-common', '{{ php_base_name }}-cli', '{{ php_base_name }}-pdo']
-    state: present
-  tags:
-    - packages
-    - php
-
-- name: install our common php packages
-  yum:
-    name: ['{{ php_base_name }}-gd', '{{ php_base_name }}-mbstring', '{{ php_base_name }}-process', '{{ php_base_name 
-}}-soap', '{{ php_base_name }}-xml']
-    state: present
-  tags:
-    - packages
-    - php
-
-- name: install pear
-  yum:
-    name: "{{ php_base_name }}-pear"
-    state: present
-  when: (php_source != "IUS") or (php_source == "IUS" and php_version < 7.1)
-  tags:
-    - packages
-    - php
-
-- name: install IUS pear
-  yum:
-    name: "pear1u"
-    state: present
-  when: php_source == "IUS" and php_version >= 7.1
-  tags:
-    - packages
-    - php
-
-- name: install mcrypt
-  yum:
-    name: "{{ php_base_name }}-mcrypt"
-    state: present
-  when: php_version <= 7.1
-  tags:
-    - packages
-    - php
-
-- name: install sodium
-  yum:
-    name: "{{ php_base_name }}-sodium"
-    state: present
-  when: php_version > 7.1
-  tags:
-    - packages
-    - php
-
-- name: install IUS json
-  yum:
-    name: "{{ php_base_name }}-json"
-    state: present
+- name: set session and cache base dirs
+  set_fact:
+    php_write_dir: /var/lib/php/fpm
   when: php_source == "IUS" and php_version > 5.6
-  tags:
-    - packages
-    - php
 
-- name: install php imagick
-  yum:
-    name: "{{ php_base_name }}-pecl-imagick"
-    state: present
-  when: php_imagick == true
-  notify: restart php
-  tags:
-    - packages
-    - php
+- name: set session and cache base dirs
+  set_fact:
+    php_write_dir: /var/lib/php-fpm
+  when: php_source != "IUS" or php_version <= 5.6
 
-- name: install php fpm
-  yum:
-    name: "{{ php_base_name }}-fpm"
-    state: present
-  when: php_fpm == true
-  tags:
-    - packages
-    - php
-
-- name: configure php fpm
-  template:
-    src: php-fpm.conf.j2
-    dest: /etc/php-fpm.conf
-    owner: root
-    group: root
-    mode: 0644
-  when: php_fpm == true
-  notify: restart php-fpm
-  tags:
-    - configuration
-    - php
-
-- name: configure php fpm pools
-  template:
-    src: php-fpm.pool.conf.j2
-    dest: /etc/php-fpm.d/www.conf
-    owner: root
-    group: root
-    mode: 0644
-  when: php_fpm == true
-  notify: restart php-fpm
-  tags:
-    - configuration
-    - php
-
-- name: configure logrotate for php fpm
-  template:
-    src: logrotate.j2
-    dest: /etc/logrotate.d/php-fpm
-  when: php_fpm == true
-  tags:
-    - configuration
-    - php
-    - logrotate
-
-- name: install mod_proxy_fcgi backport for php-fpm
-  yum:
-    name: mod_proxy_fcgi
-    state: present
-  when: ansible_distribution_major_version|int == 6 and php_fpm == true
-  notify: restart httpd
-  tags:
-    - packages
-    - php
-
-- name: install php mysqlnd
-  yum:
-    name: "{{ php_base_name }}-mysqlnd"
-    state: present
-  when: php_version > 5.4
-  tags:
-    - packages
-    - php
-
-- name: install php mysql
-  yum:
-    name: "{{ php_base_name }}-mysql"
-    state: present
-  when: php_version < 5.5
-  tags:
-    - packages
-    - php
-
-- name: install php redis
-  yum:
-    name: "{{ php_base_name }}-pecl-redis"
-    state: present
-  tags:
-    - packages
-    - php
-
-- name: install php opcache for IUS/Webtatic
-  yum:
-    name: ['{{ php_base_name }}-opcache', '{{ php_base_name }}-pecl-apcu']
-    state: present
-  when: php_base_name != "php" and php_base_name != "php54w"
-  tags:
-    - packages
-    - php
-
-- name: install php opcache for base
-  yum:
-    name: ['{{ php_base_name }}-pecl-zendopcache', '{{ php_base_name }}-pecl-apcu']
-    state: present
-  when: php_base_name == "php" or php_base_name == "php54w"
-  tags:
-    - packages
-    - php
-
-- name: install php memcache driver
-  yum:
-    name: "{{ php_base_name }}-pecl-memcache"
-    state: present
-  when: php_use_memcache == true and php_version < 5.6
-  tags:
-    - packages
-    - php
-
-- name: install php memcached driver
-  yum:
-    name: "{{ php_base_name }}-pecl-memcached"
-    state: present
-  when: php_use_memcached == true
+- name: setup php packages
+  include: packages.yml
   tags:
     - packages
     - php
@@ -200,6 +27,14 @@
   tags:
     - configuration
     - php
+
+- name: setup php fpm
+  include: fpm.yml
+  tags:
+    - packages
+    - configuration
+    - php
+    - services
 
 - name: configure php httpd module
   template:
@@ -244,17 +79,6 @@
     - configuration
     - php
     - httpd
-
-- name: ensure php-fpm is enabled
-  service:
-    name: php-fpm
-    enabled: yes
-  when: php_fpm == true
-  notify: restart php-fpm
-  tags:
-    - configuration
-    - php
-    - services
 
 - name: install composer
   include: composer.yml

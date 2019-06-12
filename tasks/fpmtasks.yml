@@ -1,0 +1,61 @@
+- name: ensure pool groups exist
+  group:
+    name: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    state: present
+  tags:
+    - configuration
+    - php
+
+- name: ensure pool users exist
+  user:
+    name: "{{ item.php_fpm_user|default(php_fpm_user) }}"
+    group: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    state: present
+  when: php_fpm and php_fpm_pools|length > 0
+  tags:
+    - configuration
+    - php
+
+- name: setup session dirs
+  file:
+    path: "{{ php_write_dir }}/session/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}"
+    owner: root
+    group: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    mode: 0770
+    state: directory
+
+- name: setup wsdlcachce dirs
+  file:
+    path: "{{ php_write_dir }}/wsdlcache/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}"
+    owner: root
+    group: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    mode: 0770
+    state: directory
+
+- name: setup opcache dirs
+  file:
+    path: "{{ php_write_dir }}/opcache/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}"
+    owner: root
+    group: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    mode: 0770
+    state: directory
+
+- name: Allow Apache/php-fpm to listen on tcp ports
+  seport:
+    ports: "{{ item.php_fpm_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+- name: configure php fpm pools
+  template:
+    src: php-fpm.pool.conf.j2
+    dest: /etc/php-fpm.d/{{ item.php_fpm_pool_name }}.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: php_fpm and php_fpm_pools|length > 0
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php

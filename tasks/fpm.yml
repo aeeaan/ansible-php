@@ -1,0 +1,71 @@
+- name: install php fpm
+  yum:
+    name: "{{ php_base_name }}-fpm"
+    state: present
+  when: php_fpm == true
+  tags:
+    - packages
+    - php
+
+- name: configure php fpm
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: php_fpm == true
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+
+- name: configure default php fpm pool
+  template:
+    src: php-fpm.pool.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: 0644
+  when: php_fpm and php_fpm_setup_global
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+
+- name: run fpm pool tasks
+  include_tasks:
+    file: fpmtasks.yml
+  with_items:
+    - "{{ php_fpm_pools }}"
+
+- name: configure logrotate for php fpm
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/php-fpm
+  when: php_fpm == true
+  tags:
+    - configuration
+    - php
+    - logrotate
+
+- name: install mod_proxy_fcgi backport for php-fpm
+  yum:
+    name: mod_proxy_fcgi
+    state: present
+  when: ansible_distribution_major_version|int == 6 and php_fpm == true
+  notify: restart httpd
+  tags:
+    - packages
+    - php
+
+- name: ensure php-fpm is enabled
+  service:
+    name: php-fpm
+    enabled: yes
+  when: php_fpm == true
+  notify: restart php-fpm
+  tags:
+    - configuration
+    - php
+    - services

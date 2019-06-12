@@ -1,5 +1,5 @@
 ; Start a new pool named 'www'.
-[www]
+[{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}]
 
 ; The address on which to accept FastCGI requests.
 ; Valid syntaxes are:
@@ -9,7 +9,7 @@
 ;                            specific port;
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
-listen = 127.0.0.1:9000
+listen = {{ item.php_fpm_address|default(php_fpm_address) }}:{{ item.php_fpm_port|default(php_fpm_port) }}
 
 ; Set listen(2) backlog. A value of '-1' means unlimited.
 ; Default Value: -1
@@ -36,9 +36,9 @@ listen.allowed_clients = 127.0.0.1
 ; Note: The user is mandatory. If the group is not set, the default user's group
 ;       will be used.
 ; RPM: apache Choosed to be able to access some dir as httpd
-user = {{ php_fpm_user }}
+user = {{ item.php_fpm_user|default(php_fpm_user) }}
 ; RPM: Keep a group allowed to write in log dir.
-group = {{ php_fpm_user }}
+group = {{ item.php_fpm_user|default(php_fpm_user) }}
 
 ; Choose how the process manager will control the number of child processes.
 ; Possible Values:
@@ -57,7 +57,7 @@ group = {{ php_fpm_user }}
 ;                                    of 'idle' processes is greater than this
 ;                                    number then some children will be killed.
 ; Note: This value is mandatory.
-pm = {{ php_fpm_pm }}
+pm = {{ item.php_fpm_pm|default(php_fpm_pm) }}
 
 ; The number of child processes to be created when pm is set to 'static' and the
 ; maximum number of child processes to be created when pm is set to 'dynamic'.
@@ -67,28 +67,28 @@ pm = {{ php_fpm_pm }}
 ; CGI.
 ; Note: Used when pm is set to either 'static' or 'dynamic'
 ; Note: This value is mandatory.
-pm.max_children = {{ php_fpm_max_children }}
+pm.max_children = {{ item.php_fpm_max_children|default(php_fpm_max_children) }}
 
 ; The number of child processes created on startup.
 ; Note: Used only when pm is set to 'dynamic'
 ; Default Value: min_spare_servers + (max_spare_servers - min_spare_servers) / 2
-pm.start_servers = {{ php_fpm_start_servers }}
+pm.start_servers = {{ item.php_fpm_start_servers|default(php_fpm_start_servers) }}
 
 ; The desired minimum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.min_spare_servers = {{ php_fpm_min_spare_servers }}
+pm.min_spare_servers = {{ item.php_fpm_min_spare_servers|default(php_fpm_min_spare_servers) }}
 
 ; The desired maximum number of idle server processes.
 ; Note: Used only when pm is set to 'dynamic'
 ; Note: Mandatory when pm is set to 'dynamic'
-pm.max_spare_servers = {{ php_fpm_max_spare_servers }}
+pm.max_spare_servers = {{ item.php_fpm_max_spare_servers|default(php_fpm_max_spare_servers) }}
  
 ; The number of requests each child process should execute before respawning.
 ; This can be useful to work around memory leaks in 3rd party libraries. For
 ; endless request processing specify '0'. Equivalent to PHP_FCGI_MAX_REQUESTS.
 ; Default Value: 0
-pm.max_requests = {{ php_fpm_max_requests }}
+pm.max_requests = {{ item.php_fpm_max_requests|default(php_fpm_max_requests) }}
 
 ; The URI to view the FPM status page. If this value is not set, no URI will be
 ; recognized as a status page. By default, the status page shows the following
@@ -222,10 +222,8 @@ php_admin_flag[log_errors] = on
 
 ; Set session path to a directory owned by process user
 php_value[session.save_handler] = files
-{% if php_source == "IUS" and php_version > 5.6 %}
-php_value[session.save_path]    = /var/lib/php/fpm/session
-php_value[soap.wsdl_cache_dir]  = /var/lib/php/fpm/wsdlcache
-{% else %}
-php_value[session.save_path]    = /var/lib/php-fpm/session
-php_value[soap.wsdl_cache_dir]  = /var/lib/php-fpm/wsdlcache
+php_value[session.save_path]    = {{ php_write_dir }}/session/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}
+php_value[soap.wsdl_cache_dir]  = {{ php_write_dir }}/wsdlcache/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}
+{% if php_version >= 7.0 %}
+php_value[opcache.file_cache]   = {{ php_write_dir }}/opcache/{{ item.php_fpm_pool_name|default(php_fpm_pool_name) }}
 {% endif %}

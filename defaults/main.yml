@@ -6,8 +6,12 @@ php_source: ""
 php_development: false
 
 php_fpm: true
+php_fpm_setup_global: true
 php_fpm_user: php-fpm
 php_fpm_group: php-fpm
+php_fpm_pool_name: www
+php_fpm_address: 127.0.0.1
+php_fpm_port: 9000
 php_fpm_proxy_timeout: 30
 #logrotate settings
 php_fpm_logrotate_period: weekly
@@ -19,6 +23,13 @@ php_fpm_start_servers: 5
 php_fpm_min_spare_servers: 5
 php_fpm_max_spare_servers: 35
 php_fpm_max_requests: 0
+
+# bare minimum, make sure pool name and port are unique
+php_fpm_pools: []
+#   - php_fpm_pool_name: test
+#     php_fpm_user: test
+#     php_fpm_group: test
+#     php_fpm_port: 9001 
 
 php_imagick: true
 #multiple memcache pecl modules

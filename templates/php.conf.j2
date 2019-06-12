@@ -14,7 +14,7 @@ DirectoryIndex index.php
 
 </IfModule>
 
-{% if php_fpm and ansible_distribution_major_version|int > 6 %}
+{% if php_fpm and php_fpm_setup_global and ansible_distribution_major_version|int > 6 %}
 <IfModule  !mod_php5.c>
 
 <FilesMatch "\.php$">

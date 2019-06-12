@@ -1,0 +1,133 @@
+- name: install base php packages
+  yum:
+    name: ['{{ php_base_name }}-common', '{{ php_base_name }}-cli', '{{ php_base_name }}-pdo']
+    state: present
+  tags:
+    - packages
+    - php
+
+- name: install our common php packages
+  yum:
+    name: ['{{ php_base_name }}-gd', '{{ php_base_name }}-mbstring', '{{ php_base_name }}-process', '{{ php_base_name 
+}}-soap', '{{ php_base_name }}-xml']
+    state: present
+  tags:
+    - packages
+    - php
+
+- name: install pear
+  yum:
+    name: "{{ php_base_name }}-pear"
+    state: present
+  when: (php_source != "IUS") or (php_source == "IUS" and php_version < 7.1)
+  tags:
+    - packages
+    - php
+
+- name: install IUS pear
+  yum:
+    name: "pear1u"
+    state: present
+  when: php_source == "IUS" and php_version >= 7.1
+  tags:
+    - packages
+    - php
+
+- name: install mcrypt
+  yum:
+    name: "{{ php_base_name }}-mcrypt"
+    state: present
+  when: php_version <= 7.1
+  tags:
+    - packages
+    - php
+
+- name: install sodium
+  yum:
+    name: "{{ php_base_name }}-sodium"
+    state: present
+  when: php_version > 7.1
+  tags:
+    - packages
+    - php
+
+- name: install IUS json
+  yum:
+    name: "{{ php_base_name }}-json"
+    state: present
+  when: php_source == "IUS" and php_version > 5.6
+  tags:
+    - packages
+    - php
+
+- name: install php imagick
+  yum:
+    name: "{{ php_base_name }}-pecl-imagick"
+    state: present
+  when: php_imagick == true
+  notify: restart php
+  tags:
+    - packages
+    - php
+
+- name: install php mysqlnd
+  yum:
+    name: "{{ php_base_name }}-mysqlnd"
+    state: present
+  when: php_version > 5.4
+  tags:
+    - packages
+    - php
+
+- name: install php mysql
+  yum:
+    name: "{{ php_base_name }}-mysql"
+    state: present
+  when: php_version < 5.5
+  tags:
+    - packages
+    - php
+
+- name: install php redis
+  yum:
+    name: "{{ php_base_name }}-pecl-redis"
+    state: present
+  tags:
+    - packages
+    - php
+
+- name: install php opcache for IUS/Webtatic
+  yum:
+    name: ['{{ php_base_name }}-opcache', '{{ php_base_name }}-pecl-apcu']
+    state: present
+  when: php_base_name != "php" and php_base_name != "php54w"
+  tags:
+    - packages
+    - php
+
+- name: install php opcache for base
+  yum:
+    name: ['{{ php_base_name }}-pecl-zendopcache', '{{ php_base_name }}-pecl-apcu']
+    state: present
+  when: php_base_name == "php" or php_base_name == "php54w"
+  tags:
+    - packages
+    - php
+
+- name: install php memcache driver
+  yum:
+    name: "{{ php_base_name }}-pecl-memcache"
+    state: present
+  when: php_use_memcache == true and php_version < 5.6
+  tags:
+    - packages
+    - php
+
+- name: install php memcached driver
+  yum:
+    name: "{{ php_base_name }}-pecl-memcached"
+    state: present
+  when: php_use_memcached == true
+  tags:
+    - packages
+    - php
