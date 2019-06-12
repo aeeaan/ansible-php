@@ -6,9 +6,13 @@
     - restart php-httpd
 
 - name: restart php-fpm
-  service: name=php-fpm state=restarted
+  service:
+    name: php-fpm
+    state: restarted
   when: php_fpm == true
 
 - name: restart php-httpd
-  service: name=httpd state=restarted
+  service:
+    name: httpd
+    state: restarted
   when: php_fpm == false

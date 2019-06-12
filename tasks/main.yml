@@ -17,42 +17,54 @@
     - php
 
 - name: install pear
-  yum: name="{{ php_base_name }}-pear" state=present
+  yum:
+    name: "{{ php_base_name }}-pear"
+    state: present
   when: (php_source != "IUS") or (php_source == "IUS" and php_version < 7.1)
   tags:
     - packages
     - php
 
 - name: install IUS pear
-  yum: name="pear1u" state=present
+  yum:
+    name: "pear1u"
+    state: present
   when: php_source == "IUS" and php_version >= 7.1
   tags:
     - packages
     - php
 
 - name: install mcrypt
-  yum: name="{{ php_base_name }}-mcrypt" state=present
+  yum:
+    name: "{{ php_base_name }}-mcrypt"
+    state: present
   when: php_version <= 7.1
   tags:
     - packages
     - php
 
 - name: install sodium
-  yum: name="{{ php_base_name }}-sodium" state=present
+  yum:
+    name: "{{ php_base_name }}-sodium"
+    state: present
   when: php_version > 7.1
   tags:
     - packages
     - php
 
 - name: install IUS json
-  yum: name="{{ php_base_name }}-json" state=present
+  yum:
+    name: "{{ php_base_name }}-json"
+    state: present
   when: php_source == "IUS" and php_version > 5.6
   tags:
     - packages
     - php
 
 - name: install php imagick
-  yum: name="{{ php_base_name }}-pecl-imagick" state=present
+  yum:
+    name: "{{ php_base_name }}-pecl-imagick"
+    state: present
   when: php_imagick == true
   notify: restart php
   tags:
@@ -60,14 +72,21 @@
     - php
 
 - name: install php fpm
-  yum: name="{{ php_base_name }}-fpm" state=present
+  yum:
+    name: "{{ php_base_name }}-fpm"
+    state: present
   when: php_fpm == true
   tags:
     - packages
     - php
 
 - name: configure php fpm
-  template: src=php-fpm.conf.j2 dest=/etc/php-fpm.conf owner=root group=root mode=0644
+  template:
+    src: php-fpm.conf.j2
+    dest: /etc/php-fpm.conf
+    owner: root
+    group: root
+    mode: 0644
   when: php_fpm == true
   notify: restart php-fpm
   tags:
@@ -75,7 +94,12 @@
     - php
 
 - name: configure php fpm pools
-  template: src=php-fpm.pool.conf.j2 dest=/etc/php-fpm.d/www.conf owner=root group=root mode=0644
+  template:
+    src: php-fpm.pool.conf.j2
+    dest: /etc/php-fpm.d/www.conf
+    owner: root
+    group: root
+    mode: 0644
   when: php_fpm == true
   notify: restart php-fpm
   tags:
@@ -83,7 +107,9 @@
     - php
 
 - name: configure logrotate for php fpm
-  template: src=logrotate.j2 dest=/etc/logrotate.d/php-fpm
+  template:
+    src: logrotate.j2
+    dest: /etc/logrotate.d/php-fpm
   when: php_fpm == true
   tags:
     - configuration
@@ -91,7 +117,9 @@
     - logrotate
 
 - name: install mod_proxy_fcgi backport for php-fpm
-  yum: name=mod_proxy_fcgi state=present
+  yum:
+    name: mod_proxy_fcgi
+    state: present
   when: ansible_distribution_major_version|int == 6 and php_fpm == true
   notify: restart httpd
   tags:
@@ -99,21 +127,27 @@
     - php
 
 - name: install php mysqlnd
-  yum: name="{{ php_base_name }}-mysqlnd" state=present
+  yum:
+    name: "{{ php_base_name }}-mysqlnd"
+    state: present
   when: php_version > 5.4
   tags:
     - packages
     - php
 
 - name: install php mysql
-  yum: name="{{ php_base_name }}-mysql" state=present
+  yum:
+    name: "{{ php_base_name }}-mysql"
+    state: present
   when: php_version < 5.5
   tags:
     - packages
     - php
 
 - name: install php redis
-  yum: name="{{ php_base_name }}-pecl-redis" state=present
+  yum:
+    name: "{{ php_base_name }}-pecl-redis"
+    state: present
   tags:
     - packages
     - php
@@ -137,21 +171,30 @@
     - php
 
 - name: install php memcache driver
-  yum: name="{{ php_base_name }}-pecl-memcache" state=present
+  yum:
+    name: "{{ php_base_name }}-pecl-memcache"
+    state: present
   when: php_use_memcache == true and php_version < 5.6
   tags:
     - packages
     - php
 
 - name: install php memcached driver
-  yum: name="{{ php_base_name }}-pecl-memcached" state=present
+  yum:
+    name: "{{ php_base_name }}-pecl-memcached"
+    state: present
   when: php_use_memcached == true
   tags:
     - packages
     - php
 
 - name: configure php.ini
-  template: src=php.{{ php_version }}.ini.j2 dest=/etc/php.ini mode=0644 owner=root group=root
+  template:
+    src: php.{{ php_version }}.ini.j2
+    dest: /etc/php.ini
+    mode: 0644
+    owner: root
+    group: root
   notify: 
     - restart php
   tags:
@@ -159,7 +202,12 @@
     - php
 
 - name: configure php httpd module
-  template: src=10-php.conf.j2 dest=/etc/httpd/conf.modules.d/10-php.conf owner=root group=root mode=0644
+  template:
+    src: 10-php.conf.j2
+    dest: /etc/httpd/conf.modules.d/10-php.conf
+    owner: root
+    group: root
+    mode: 0644
   when: ansible_distribution_major_version|int > 6
   notify:
     - restart httpd
@@ -169,7 +217,12 @@
     - httpd
 
 - name: configure php httpd module in conf.d
-  template: src=10-php.conf.j2 dest=/etc/httpd/conf.d/10-php.conf owner=root group=root mode=0644
+  template:
+    src: 10-php.conf.j2
+    dest: /etc/httpd/conf.d/10-php.conf
+    owner: root
+    group: root
+    mode: 0644
   when: ansible_distribution_major_version|int < 7
   notify:
     - restart httpd
@@ -179,7 +232,12 @@
     - httpd
 
 - name: configure httpd for php
-  template: src=php.conf.j2 dest=/etc/httpd/conf.d/php.conf owner=root group=root mode=0644
+  template:
+    src: php.conf.j2
+    dest: /etc/httpd/conf.d/php.conf
+    owner: root
+    group: root
+    mode: 0644
   notify:
     - restart httpd
   tags:
@@ -188,7 +246,9 @@
     - httpd
 
 - name: ensure php-fpm is enabled
-  service: name=php-fpm enabled=yes
+  service:
+    name: php-fpm
+    enabled: yes
   when: php_fpm == true
   notify: restart php-fpm
   tags:

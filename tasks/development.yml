@@ -1,19 +1,25 @@
 - name: install php devel
-  yum: name="{{ php_base_name }}-devel" state=present
+  yum:
+    name: "{{ php_base_name }}-devel"
+    state: present
   tags:
     - php
     - development
     - packages
 
 - name: install phpunit
-  yum: name={{ php_phpunit_rpms }} state=present
+  yum:
+    name: "{{ php_phpunit_rpms }}"
+    state: present
   tags:
     - php
     - development
     - packages
 
 - name: install codesniffer
-  yum: name=php-pear-PHP-CodeSniffer state=present
+  yum:
+    name: php-pear-PHP-CodeSniffer
+    state: present
   tags:
     - php
     - development
