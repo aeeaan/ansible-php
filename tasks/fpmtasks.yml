@@ -10,6 +10,9 @@
   user:
     name: "{{ item.php_fpm_user|default(php_fpm_user) }}"
     group: "{{ item.php_fpm_group|default(php_fpm_group) }}"
+    home: "{{ item.php_fpm_home|default(omit) }}"
+    create_home: "{{ item.php_fpm_create_home|default(omit) }}"
+    system: "{{ item.php_fpm_system|default(omit) }}"
     state: present
   when: php_fpm and php_fpm_pools|length > 0
   tags:
