@@ -2,8 +2,19 @@
 # php package name
 php_base_name: php
 php_version: 7.2
-php_source: ""
 php_development: false
+
+php_base_packages:
+  - "{{ php_base_name }}"
+  - "{{ php_base_name }}-common"
+  - "{{ php_base_name }}-cli"
+  - "{{ php_base_name }}-opcache"
+
+php_addon_packages:
+  - "{{ php_base_name }}-gd"
+  - "{{ php_base_name }}-mbstring"
+  - "{{ php_base_name }}-soap"
+  - "{{ php_base_name }}-xml"
 
 php_fpm: true
 php_fpm_setup_global: true
