@@ -1,13 +1,7 @@
 ---
 - name: set session and cache base dirs
   set_fact:
-    php_write_dir: /var/lib/php/fpm
-  when: php_source == "IUS" and php_version > 5.6
-
-- name: set session and cache base dirs
-  set_fact:
-    php_write_dir: /var/lib/php-fpm
-  when: php_source != "IUS" or php_version <= 5.6
+    php_write_dir: /var/lib/php
 
 - name: setup php packages
   include: packages.yml
