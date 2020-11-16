@@ -8,8 +8,19 @@
     - composer
     - packages
 
+- name: ensure php json is installed for composer
+  yum:
+    name: "{{ php_base_name }}-json"
+    state: present
+  tags:
+    - packages
+    - php
+
 - name: run composer installer
-  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet creates=/usr/local/bin/composer
+  shell: curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer --quiet
+  args:
+      creates: /usr/local/bin/composer
+      warn: false
   tags:
     - php
     - composer
@@ -19,8 +30,8 @@
   cron:
     name: "update composer"
     job: "/usr/local/bin/composer -qn self-update"
-    hour: 2
-    minute: 0
+    hour: "2"
+    minute: "0"
     state: present
   when: php_composer_autoupdate
   tags:
