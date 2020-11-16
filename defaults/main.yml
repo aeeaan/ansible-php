@@ -58,28 +58,3 @@ php_composer_autoupdate: true
 php_codeception: false
 php_codeception_autoupdate: true
 
-php_phpunit_rpms:
-  - php-phpunit-DbUnit
-  - php-phpunit-File-Iterator
-  - php-phpunit-FinderFacade
-  - php-phpunit-PHP-CodeCoverage
-  - php-phpunit-PHP-Invoker
-  - php-phpunit-PHP-Timer
-  - php-phpunit-PHP-TokenStream
-  - php-phpunit-PHPUnit
-  - php-phpunit-PHPUnit-MockObject
-  - php-phpunit-PHPUnit-Selenium
-  - php-phpunit-PHPUnit-SkeletonGenerator
-  - php-phpunit-PHPUnit-Story
-  - php-phpunit-Text-Template
-  - php-phpunit-Version
-  - php-phpunit-bytekit
-  - php-phpunit-comparator
-  - php-phpunit-diff
-  - php-phpunit-environment
-  - php-phpunit-exporter
-  - php-phpunit-git
-  - php-phpunit-phpcov
-  - php-phpunit-phpcpd
-  - php-phpunit-phpdcd
-  - php-phpunit-phploc
