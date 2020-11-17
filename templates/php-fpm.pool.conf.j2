@@ -262,6 +262,7 @@ pm.max_requests = {{ item.php_fpm_max_requests|default(php_fpm_max_requests) }}
 ; Default: not set
 ;access.log = log/$pool.access.log
 
+{% raw %}
 ; The access log format.
 ; The following syntax is allowed
 ;  %%: the '%' character
@@ -320,6 +321,7 @@ pm.max_requests = {{ item.php_fpm_max_requests|default(php_fpm_max_requests) }}
 ;
 ; Default: "%R - %u %t \"%m %r\" %s"
 ;access.format = "%R - %u %t \"%m %r%Q%q\" %s %f %{mili}d %{kilo}M %C%%"
+{% endraw %}
 
 ; The log file for slow requests
 ; Default Value: not set
