@@ -7,16 +7,22 @@ php_development: false
 php_mod_php: false
 php_fpm: true
 
+# these package lists are separate mostly for documentation
 php_base_packages:
   - "{{ php_base_name }}-common"
   - "{{ php_base_name }}-cli"
-  - "{{ php_base_name }}-opcache"
 
-php_addon_packages:
-  - "{{ php_base_name }}-gd"
-  - "{{ php_base_name }}-mbstring"
-  - "{{ php_base_name }}-soap"
+# would be installed with common stream profile
+php_common_packages: 
+  - "{{ php_base_name }}-json"
   - "{{ php_base_name }}-xml"
+  - "{{ php_base_name }}-mbstring"
+
+# additional php modules that I've chosen
+php_additional_packages:
+  - "{{ php_base_name }}-soap"
+  - "{{ php_base_name }}-opcache"
+  - "{{ php_base_name }}-gd"
 
 php_fpm_setup_global: true
 php_fpm_user: php-fpm

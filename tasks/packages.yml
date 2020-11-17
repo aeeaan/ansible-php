@@ -1,14 +1,6 @@
-- name: install base php packages
+- name: install php packages
   yum:
-    name: "{{ php_base_packages }}"
-    state: present
-  tags:
-    - packages
-    - php
-
-- name: install our common php packages
-  yum:
-    name: "{{ php_addon_packages }}"
+    name: "{{ php_base_packages + php_common_packages + php_additional_packages }}"
     state: present
   tags:
     - packages
