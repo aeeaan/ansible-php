@@ -8,9 +8,9 @@ Role Variables
 
 | Variable                              | Default				| Notes					|
 | :---                                  | :---                          	| :---					|
-| php_base_name				| php					| php, php55u, php56u, etc		|
-| php_version				| 5.4					|					|
-| php_source				| ''					| '',IUS				|
+| php_base_name				| php					| php, php73, etc		|
+| php_version				| 7.2					|					|
+| php_mod_php   | false         | This will only get used with a prefork apache |
 | php_fpm				| true					|					|
 | php_fpm_user				| php-fpm				|					|
 | php_fpm_group				| php-fpm				|					|
@@ -24,9 +24,6 @@ Role Variables
 | php_fpm_min_spare_servers		| 5					|					|
 | php_fpm_max_spare_servers		| 35					|					|
 | php_fpm_max_requests			| 0					| 0 is unlimited			|
-| php_imagick				| true					|					|
-| php_use_memcache			| true					|					|
-| php_use_memcached			| false					|					|
 | php_timezone				| America/New_York			|					|
 | php_upload_max			| 30M					|					|
 | php_post_max				| 30M					|					|
