@@ -25,8 +25,8 @@ php_additional_packages:
   - "{{ php_base_name }}-gd"
 
 php_fpm_setup_global: true
-php_fpm_user: php-fpm
-php_fpm_group: php-fpm
+php_fpm_user: apache
+php_fpm_group: apache
 php_fpm_pool_name: www
 php_fpm_address: 127.0.0.1
 php_fpm_port: 9000

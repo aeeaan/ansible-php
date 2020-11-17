@@ -12,8 +12,8 @@ Role Variables
 | php_version				| 7.2					|					|
 | php_mod_php   | false         | This will only get used with a prefork apache |
 | php_fpm				| true					|					|
-| php_fpm_user				| php-fpm				|					|
-| php_fpm_group				| php-fpm				|					|
+| php_fpm_user				| apache				|					|
+| php_fpm_group				| apache				|					|
 | php_fpm_proxy_timeout			| 30					| timeout for mod_proxy_fcgi handler	|
 | php_fpm_logrotate_period		| weekly				| daily, weekly, monthly     		|
 | php_fpm_logrotate_keep		| 5					| number of rotations to keep		|
