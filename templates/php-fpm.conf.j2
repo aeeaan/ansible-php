@@ -1,8 +1,5 @@
 ; {{ ansible_managed }}
 ;
-; WARNING: not all of these configuration directives will be compatible with all versions of php-fpm.
-; PHP documentation doesn't seem to bother keeping track of what versions directives were added in.
-;
 ;;;;;;;;;;;;;;;;;;;;;
 ; FPM Configuration ;
 ;;;;;;;;;;;;;;;;;;;;;
@@ -22,11 +19,7 @@ include=/etc/php-fpm.d/*.conf
 [global]
 ; Pid file
 ; Default Value: none
-{% if ansible_distribution_major_version|int > 6 %}
 pid = /run/php-fpm/php-fpm.pid
-{% else %}
-pid = /var/run/php-fpm/php-fpm.pid
-{% endif %}
 
 ; Error log file
 ; If it's set to "syslog", log is sent to syslogd instead of being written
@@ -58,7 +51,7 @@ error_log = /var/log/php-fpm/error.log
 ; Default Value: 0
 ;emergency_restart_threshold = 0
 
-; Interval of time used by emergency_restart_interval to determine when 
+; Interval of time used by emergency_restart_interval to determine when
 ; a graceful restart will be initiated.  This can be useful to work around
 ; accidental corruptions in an accelerator's shared memory.
 ; Available Units: s(econds), m(inutes), h(ours), or d(ays)
@@ -72,7 +65,7 @@ error_log = /var/log/php-fpm/error.log
 ; Default Value: 0
 ;process_control_timeout = 0
 
-; The maximum number of processes FPM will fork. This has been design to control
+; The maximum number of processes FPM will fork. This has been designed to control
 ; the global number of processes when using dynamic PM within a lot of pools.
 ; Use it with caution.
 ; Note: A value of 0 indicates no limit
@@ -80,20 +73,16 @@ error_log = /var/log/php-fpm/error.log
 ;process.max = 128
 
 ; Specify the nice(2) priority to apply to the master process (only if set)
-; The value can vary from -19 (highest priority) to 20 (lower priority)
+; The value can vary from -19 (highest priority) to 20 (lowest priority)
 ; Note: - It will only work if the FPM master process is launched as root
 ;       - The pool process will inherit the master process priority
-;         unless it specified otherwise
+;         unless specified otherwise
 ; Default Value: no set
 ;process.priority = -19
 
 ; Send FPM to background. Set to 'no' to keep FPM in foreground for debugging.
 ; Default Value: yes
-{% if php_base_name == "php" and ansible_distribution_major_version|int < 7 %}
-daemonize = no
-{% else %}
 daemonize = yes
-{% endif %}
 
 ; Set open file descriptor rlimit for the master process.
 ; Default Value: system defined value
@@ -111,8 +100,8 @@ daemonize = yes
 ; Default Value: not set (auto detection)
 ;events.mechanism = epoll
 
-; When FPM is build with systemd integration, specify the interval,
-; in second, between health report notification to systemd.
+; When FPM is built with systemd integration, specify the interval,
+; in seconds, between health report notification to systemd.
 ; Set to 0 to disable.
 ; Available Units: s(econds), m(inutes), h(ours)
 ; Default Unit: seconds
@@ -120,8 +109,12 @@ daemonize = yes
 ;systemd_interval = 10
 
 ;;;;;;;;;;;;;;;;;;;;
-; Pool Definitions ; 
+; Pool Definitions ;
 ;;;;;;;;;;;;;;;;;;;;
 
-; See /etc/php-fpm.d/*.conf
+; Multiple pools of child processes may be started with different listening
+; ports and different management options.  The name of the pool will be
+; used in logs and stats. There is no limitation on the number of pools which
+; FPM can handle. Your system will tell you anyway :)
 
+; See /etc/php-fpm.d/*.conf
