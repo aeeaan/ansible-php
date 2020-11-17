@@ -4,12 +4,9 @@
     php_write_dir: /var/lib/php
 
 - name: Set up php stream
-  shell: |
-    dnf module enable -y php:{{ php_version }}
-  args:
-    warn: false
-  register: dnf_module_enable
-  changed_when: "'Nothing to do' not in dnf_module_enable.stdout"
+  dnf:
+    name: '@php:{{ php_version }}/minimal'
+    state: present
 
 - name: setup php packages
   include: packages.yml
