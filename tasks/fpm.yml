@@ -49,16 +49,6 @@
     - php
     - logrotate
 
-- name: install mod_proxy_fcgi backport for php-fpm
-  yum:
-    name: mod_proxy_fcgi
-    state: present
-  when: ansible_distribution_major_version|int == 6 and php_fpm == true
-  notify: restart httpd
-  tags:
-    - packages
-    - php
-
 - name: ensure php-fpm is enabled
   service:
     name: php-fpm
