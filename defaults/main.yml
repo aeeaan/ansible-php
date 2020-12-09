@@ -28,8 +28,7 @@ php_fpm_setup_global: true
 php_fpm_user: apache
 php_fpm_group: apache
 php_fpm_pool_name: www
-php_fpm_address: 127.0.0.1
-php_fpm_port: 9000
+php_fpm_listen: /run/php-fpm/www.sock
 php_fpm_proxy_timeout: 30
 #logrotate settings
 php_fpm_logrotate_period: weekly

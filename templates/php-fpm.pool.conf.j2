@@ -36,7 +36,7 @@ group = {{ item.php_fpm_user|default(php_fpm_user) }}
 ;   '/path/to/unix/socket' - to listen on a unix socket.
 ; Note: This value is mandatory.
 ; listen = /run/php-fpm/www.sock
-listen = {{ item.php_fpm_address|default(php_fpm_address) }}:{{ item.php_fpm_port|default(php_fpm_port) }}
+listen = {{ item.php_fpm_listen|default(php_fpm_listen) }}
 
 ; Set listen(2) backlog.
 ; Default Value: 511
